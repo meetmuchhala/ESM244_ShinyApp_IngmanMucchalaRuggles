@@ -4,27 +4,42 @@ library(palmerpenguins)
 
 ### Create the user interface:
 ui <- fluidPage(
-  titlePanel("I am adding a title!"),       
+  titlePanel("Solar Trends and Forecasts in California"),       
   sidebarLayout(                            
-    sidebarPanel("put my widgets here",
+    sidebarPanel("Time Series Visualization",
       
      radioButtons(
-       inputId = "penguin_species",
-        label = "Choose penguin species", 
-      choices = c("Adelie","Gentoo","Cool Chinstrap Penguins!" = "Chinstrap")),
+       inputId = "Choose utility",
+        label = "Choose utility type", 
+      choices = c("Option 1","Option 2")),
+     
+     radioButtons(
+       inputId = "Choose policy",
+       label = "Choose policy type", 
+       choices = c("Option 1","Option 2")),
+     
+     sliderInput("slider1", label = h3("Slider"), min = 1990, 
+                 max = 2022, value = 1990),
     
-      selectInput(inputId = "pt_color", 
-                label = "Select point color", 
-                choices = c("Roses are red!"     = "red", 
-                            "Violets are purple" = "purple", 
-                            "Oranges are..."     = "orange")
-    ) ### end of selectInput
+      # selectInput(inputId = "pt_color", 
+      #           label = "Select point color", 
+      #           choices = c("Roses are red!"     = "red", 
+      #                       "Violets are purple" = "purple", 
+      #                       "Oranges are..."     = "orange")),
+
   ), ### end of sidebarPanel
       
       mainPanel("put graphs here!",
                   plotOutput(outputId = "penguin_plot"),
                   h3('Summary table'),
                   tableOutput(outputId = "penguin_table")
+                
+                ### outputs for project:
+                # map output: community solar potential
+                # map of california, solar projects, where overlap
+                
+                
+                
                 ) ### end mainPanel
               
   ) ### end sidebayLayout
