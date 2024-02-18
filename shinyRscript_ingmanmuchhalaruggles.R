@@ -29,7 +29,10 @@ ui <- fluidPage(
 
   ), ### end of sidebarPanel
       
-      mainPanel("put graphs here!",
+      mainPanel(
+        h2("2nd level title"),
+        h5("5th level paragraph of text"),
+        "put graphs here!",
                   plotOutput(outputId = "penguin_plot"),
                   h3('Summary table'),
                   tableOutput(outputId = "penguin_table")
