@@ -13,24 +13,41 @@ library(here)
 library(janitor)
 library(sf)
 library(tmap)
+library(dplyr)
 ```
 
 ```{r}
-cities_sf <- read_sf(here("data", "California_Incorporated_Cities", "incorp23_1.shp")) %>% 
+cities_sf <- read_sf(here("data", "CA_cities_pts2", "CA_cities_pts2.shp")) %>% 
   janitor::clean_names()
 
-comm <- read_csv(here("data", "Community_Solar_CA.csv")) %>% 
+comm_df <- read_csv(here("data", "Community_Solar_CA.csv")) %>% 
   janitor::clean_names()
-```
-```{r}
-cities_sf %>% st_crs() #3857 
-comm %>% st_crs()
 ```
 
 ```{r}
+cities_sf %>% st_crs() #WGS 84 EPSG 4326 
+comm_df %>% st_crs()
+```
+
+```{r}
+# view
 plot(cities_sf %>% 
-  select(city))
+  select(name))
 # not all cities represented, come back to this
+```
+
+```{r}
+#sf needs to be 2nd and doesn't work -> do merge instead of join
+
+### ERROR: LOSES SF
+city_comm_sf <- merge(comm_df, cities_sf)
+# 13 obs still, looks good
+
+city_comm_sf_short <- city_comm_sf %>% 
+  select(project_name, city, population, lat, long, county_fips, utility, utility_type, system_size_k_w_ac, system_size_mw_ac, geometry)
+
+plot(city_comm_sf_short %>% 
+       select(population)) # not a map
 ```
 
 ```{r}
