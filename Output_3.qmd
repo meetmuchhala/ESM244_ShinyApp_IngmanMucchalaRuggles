@@ -30,13 +30,6 @@ comm_df %>% st_crs()
 ```
 
 ```{r}
-# view
-plot(cities_sf %>% 
-  select(name))
-# not all cities represented, come back to this
-```
-
-```{r}
 #sf needs to be 2nd and doesn't work -> do merge instead of join
 
 ### ERROR: LOSES SF
@@ -48,6 +41,8 @@ city_comm_sf_short <- city_comm_sf %>%
 
 plot(city_comm_sf_short %>% 
        select(population)) # not a map
+
+
 ```
 
 ```{r}
@@ -61,6 +56,8 @@ ggplot(data = comm, aes(x = year_of_interconnection,
        color = "Utility") +
   theme_minimal() +
   scale_x_continuous(breaks = 2011:2021) #show all years
+
+# put system size into perspective with population size? kw/household in city? # households in city?
 ```
 
 
