@@ -2,6 +2,8 @@ library(shiny)
 library(tidyverse)
 library(palmerpenguins)
 
+
+
 ### Create the user interface:
 ui <- fluidPage(
   titlePanel("Solar Trends and Forecasts in California"),       
