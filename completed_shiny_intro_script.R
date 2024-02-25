@@ -1,3 +1,6 @@
+
+### keeping this file for posterity- this is the completed shiny intro script tutorial.
+
 library(shiny)
 library(tidyverse)
 library(palmerpenguins)
@@ -6,44 +9,29 @@ library(palmerpenguins)
 
 ### Create the user interface:
 ui <- fluidPage(
-  titlePanel("Solar Trends and Forecasts in California"),       
+  titlePanel("Palmer's Penguins!"),       
   sidebarLayout(                            
-    sidebarPanel("Time Series Visualization",
+    sidebarPanel("Put widgets here!",
       
-     radioButtons(
-       inputId = "Choose utility",
-        label = "Choose utility type", 
-      choices = c("Option 1","Option 2")),
-     
-     radioButtons(
-       inputId = "Choose policy",
-       label = "Choose policy type", 
-       choices = c("Option 1","Option 2")),
-     
-     sliderInput("slider1", label = h3("Slider"), min = 1990, 
-                 max = 2022, value = 1990),
+                 radioButtons(
+                   inputId = "penguin_species",
+                   label = "Choose penguin species", 
+                   choices = c("Adelie","Gentoo","Cool Chinstrap Penguins!" = "Chinstrap")
+                 ),
     
-      # selectInput(inputId = "pt_color", 
-      #           label = "Select point color", 
-      #           choices = c("Roses are red!"     = "red", 
-      #                       "Violets are purple" = "purple", 
-      #                       "Oranges are..."     = "orange")),
+                selectInput(
+                  inputId = "pt_color", 
+                  label = "Select point color", 
+                  choices = c("Roses are red!"     = "red", 
+                              "Violets are purple" = "purple", 
+                              "Oranges are..."     = "orange")),
 
   ), ### end of sidebarPanel
       
-      mainPanel(
-        h2("2nd level title"),
-        h5("5th level paragraph of text"),
-        "put graphs here!",
+      mainPanel("Penguin Graphs",
                   plotOutput(outputId = "penguin_plot"),
                   h3('Summary table'),
                   tableOutput(outputId = "penguin_table")
-                
-                ### outputs for project:
-                # map output: community solar potential
-                # map of california, solar projects, where overlap
-                
-                
                 
                 ) ### end mainPanel
               
