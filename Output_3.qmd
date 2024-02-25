@@ -1,0 +1,65 @@
+---
+title: "Output 3"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(tsibble)
+library(feasts)
+library(fable)
+library(here)
+library(janitor)
+library(sf)
+library(tmap)
+```
+
+```{r}
+cities_sf <- read_sf(here("data", "California_Incorporated_Cities", "incorp23_1.shp")) %>% 
+  janitor::clean_names()
+
+comm <- read_csv(here("data", "Community_Solar_CA.csv")) %>% 
+  janitor::clean_names()
+```
+```{r}
+cities_sf %>% st_crs() #3857 
+comm %>% st_crs()
+```
+
+```{r}
+plot(cities_sf %>% 
+  select(city))
+# not all cities represented, come back to this
+```
+
+```{r}
+ggplot(data = comm, aes(x = year_of_interconnection, 
+                            y = system_size_mw_ac,
+                            color = utility)) +
+  geom_col() +
+  labs(x = "Year of Interconnection",
+       title = "California Community Projects Over Time",
+       y = "System Size (kW-AC)", 
+       color = "Utility") +
+  theme_minimal() +
+  scale_x_continuous(breaks = 2011:2021) #show all years
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
