@@ -1,0 +1,79 @@
+---
+title: "Output 3"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(tsibble)
+library(feasts)
+library(fable)
+library(here)
+library(janitor)
+library(sf)
+library(tmap)
+library(dplyr)
+```
+
+```{r}
+cities_sf <- read_sf(here("data", "CA_cities_pts2", "CA_cities_pts2.shp")) %>% 
+  janitor::clean_names()
+
+comm_df <- read_csv(here("data", "Community_Solar_CA.csv")) %>% 
+  janitor::clean_names()
+```
+
+```{r}
+cities_sf %>% st_crs() #WGS 84 EPSG 4326 
+comm_df %>% st_crs()
+```
+
+```{r}
+#sf needs to be 2nd and doesn't work -> do merge instead of join
+
+### ERROR: LOSES SF
+city_comm_sf <- merge(comm_df, cities_sf)
+# 13 obs still, looks good
+
+city_comm_sf_short <- city_comm_sf %>% 
+  select(project_name, city, population, lat, long, county_fips, utility, utility_type, system_size_k_w_ac, system_size_mw_ac, geometry)
+
+plot(city_comm_sf_short %>% 
+       select(population)) # not a map
+
+
+```
+
+```{r}
+ggplot(data = comm, aes(x = year_of_interconnection, 
+                            y = system_size_mw_ac,
+                            color = utility)) +
+  geom_col() +
+  labs(x = "Year of Interconnection",
+       title = "California Community Projects Over Time",
+       y = "System Size (kW-AC)", 
+       color = "Utility") +
+  theme_minimal() +
+  scale_x_continuous(breaks = 2011:2021) #show all years
+
+# put system size into perspective with population size? kw/household in city? # households in city?
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
