@@ -19,7 +19,7 @@ library(fable)
 ## Loading the utility consumption dataset
 
 ```{r}
-utility_consum_df <- read_csv(here('data/elec_by_utility_ca.csv')) %>% 
+utility_consum_df <- read_csv(here('data/output 1/elec_by_utility_ca.csv')) %>% 
   janitor::clean_names()
 
 ## To see the total consumption per year residential sector
@@ -34,7 +34,7 @@ aggregated_utility_consum <- utility_consum_df %>%
 
 ```{r}
 
-nem_capacity_df <- read_csv(here('data/nem-capacity-chart.csv')) %>% 
+nem_capacity_df <- read_csv(here('data/output 1/nem-capacity-chart.csv')) %>% 
   janitor::clean_names() %>% 
   rename(year = category) %>% 
   mutate(year = as.integer(year))
@@ -61,15 +61,24 @@ plot_nem <- ggplot(utility_nem_df, aes(x = year, y = prior_years_capacity)) +
   labs(x = "Year", y = "NEM Capacity (MW)") +
   theme_minimal()
 
-## plotly not working yet
-library(plotly)
-plot_residential <- ggplotly(plot_residential)
 
-print(plot_residential)
-plot_nem <- ggplotly(plot_nem)
 # Combine plots into a grid
 library(cowplot)
 combined_plot <- plot_grid(plot_residential, plot_nem, nrow = 1)
 print(combined_plot)
+
+```
+
+
+```{r}
+ts_data <- ts(utility_nem_df$total_residential, start = c(1990), frequency = 1)
+
+plot_trends <- ggplot(data = data.frame(year = time(ts_data), total_residential = ts_data), aes(x = year, y = total_residential)) +
+  geom_line() +
+  labs(title = "Residential Energy Consumption Trends in California") +
+  theme_minimal()
+
+plot_trends
+
 ```
 
