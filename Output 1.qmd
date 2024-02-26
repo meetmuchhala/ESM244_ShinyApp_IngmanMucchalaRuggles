@@ -61,6 +61,7 @@ plot_nem <- ggplot(utility_nem_df, aes(x = year, y = prior_years_capacity)) +
   labs(x = "Year", y = "NEM Capacity (MW)") +
   theme_minimal()
 
+## plotly not working yet
 library(plotly)
 plot_residential <- ggplotly(plot_residential)
 
