@@ -1,0 +1,67 @@
+---
+title: "Output_4"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(tsibble)
+library(feasts)
+library(fable)
+library(here)
+library(janitor)
+library(sf)
+library(tmap)
+library(dplyr)
+library(here)
+```
+
+Pseudocode
+-  Input and simplify LEAD, county, sunroof
+-  join lead df and sunroof df county info to county sf polygons (how to do this w df/sf?)
+-  test map 
+-  MCA of high solar potential or high sunlight threshold, high energy burden (3 or 4%?), low median household income, high #households(s?), high count qualified (?)
+- map with widget
+
+if want to specifcy thresholds:
+- yearly sunlight total kwh (total solar energy generation potential for all roof space): >10^8 kwh? bias against smaller counties
+- energy burden: 3 or 4%
+- household income: <$91,905 (2022 CA median household income)
+- # households and count qualified (# buildings solar suitable): -> # suitable buildings divided by #households (rough similarity) *100 = %suitable buildings -> >50%? prioritize counties with high solar potential?
+
+```{r}
+lead_df_raw <- read_csv(here("data", "LEAD_CA_County.csv")) %>% 
+  janitor::clean_names()
+
+lead_df <- lead_df_raw %>% 
+  select(c(county, energy_burden_percent_income, avg_annual_energy_cost, total_households, household_income))
+
+sunroof_df_raw <- read_csv(here("data", "project_sunroof_county_2019.csv")) %>% 
+  janitor::clean_names() 
+
+sunroof_df <- sunroof_df_raw %>% 
+  select(c(region_name, lat_avg, lng_avg, yearly_sunlight_kwh_kw_threshold_avg, count_qualified, percent_covered, percent_qualified, number_of_panels_median, number_of_panels_total, yearly_sunlight_kwh_median, yearly_sunlight_kwh_total, existing_installs_count))
+
+county_sf <- read_sf(here("data", "ca_counties", "CA_Counties_TIGER2016.shp")) %>% 
+  janitor::clean_names() %>% 
+  select(c(name, geometry))
+```
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
