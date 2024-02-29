@@ -23,6 +23,9 @@ cities_sf <- read_sf(here("data", "CA_cities_pts2", "CA_cities_pts2.shp")) %>%
 
 comm_df <- read_csv(here("data", "Community_Solar_CA.csv")) %>% 
   janitor::clean_names()
+
+county_sf <- read_sf(here("data", "ca_counties", "CA_Counties_TIGER2016.shp")) %>% 
+  janitor::clean_names()
 ```
 
 ```{r}
@@ -31,23 +34,42 @@ comm_df %>% st_crs()
 ```
 
 ```{r}
-#sf needs to be 2nd and doesn't work -> do merge instead of join
+city_comm_sf <- full_join(cities_sf, comm_df, by=c("name"="city")) %>% 
+  drop_na(project_name)
 
-### ERROR: LOSES SF
-city_comm_sf <- merge(comm_df, cities_sf)
-# 13 obs still, looks good
+View(city_comm_sf)
+# lost Anza and Herlong, need better city data
 
 city_comm_sf_short <- city_comm_sf %>% 
-  select(project_name, city, population, lat, long, county_fips, utility, utility_type, system_size_k_w_ac, system_size_mw_ac, geometry)
+  select(project_name, name, lat.x, long, county_fips, utility, utility_type, system_size_k_w_ac, system_size_mw_ac, geometry, population.x)
 
 plot(city_comm_sf_short %>% 
-       select(population)) # not a map
+       select(system_size_mw_ac)) 
 
+ggplot() + 
+  geom_sf(data = county_sf) +
+  geom_sf(data = city_comm_sf_short, aes(fill = system_size_mw_ac), size = 2) + # size = border
+  scale_fill_gradientn(colors = c('darkorchid4', 'chocolate1')) +
+  theme_void() +
+  labs(fill = 'System Size (MW-AC)')
 
+# ass3 df for data and df for predictions
+# predict(nls_model, newdata=list(doy=seq(147,306)))
+```
+```{r}
+tmap_mode("view") 
+
+tm_shape(county_df) + 
+  tm_polygons()+
+tm_shape(city_comm_sf_short) +
+  tm_dots(size = 0.02) +
+tm_view(view.legend.position = c("right", "top"))+
+tm_layout(title= 'System Size', 
+            title.position = c('right', 'top'))
 ```
 
 ```{r}
-ggplot(data = comm, aes(x = year_of_interconnection, 
+ggplot(data = comm_df, aes(x = year_of_interconnection, 
                             y = system_size_mw_ac,
                             color = utility)) +
   geom_col() +

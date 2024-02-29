@@ -49,7 +49,8 @@ county_sf <- read_sf(here("data", "ca_counties", "CA_Counties_TIGER2016.shp")) %
 ```
 
 ```{r}
-
+city_comm_sf <- full_join(county_sf, comm_df, by=c("name"="city")) %>% 
+  drop_na()
 ```
 
 
