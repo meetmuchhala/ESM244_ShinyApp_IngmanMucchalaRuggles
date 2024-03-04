@@ -25,7 +25,8 @@ comm_df <- read_csv(here("data", "Community_Solar_CA.csv")) %>%
   janitor::clean_names()
 
 county_sf <- read_sf(here("data", "ca_counties", "CA_Counties_TIGER2016.shp")) %>% 
-  janitor::clean_names()
+  janitor::clean_names() %>% 
+  select(c(name, geometry))
 ```
 
 ```{r}
@@ -48,10 +49,20 @@ plot(city_comm_sf_short %>%
 
 ggplot() + 
   geom_sf(data = county_sf) +
-  geom_sf(data = city_comm_sf_short, aes(fill = system_size_mw_ac), size = 2) + # size = border
-  scale_fill_gradientn(colors = c('darkorchid4', 'chocolate1')) +
+  geom_sf(data = city_comm_sf_short, aes(color = system_size_mw_ac), size = 2) + # size = border
+  scale_fill_gradientn(colors = c('darkorchid4', 'chocolate1')) + #not working
   theme_void() +
   labs(fill = 'System Size (MW-AC)')
+
+# ERROR: WANT POINTS COLORED, MISTAKES WITH NEW CODE:
+# I think unmatched lat/long and county, need x and y which messes that up
+
+# ggplot() + 
+#   geom_sf(data = county_sf) +
+#   geom_point(data = city_comm_sf_short, aes(x=long, y = lat.x, color = system_size_mw_ac), shape=21) + # size = border
+#   scale_fill_gradientn(colors = c('darkorchid4', 'chocolate1')) +
+#   theme_void() +
+#   labs(fill = 'System Size (MW-AC)')
 
 # ass3 df for data and df for predictions
 # predict(nls_model, newdata=list(doy=seq(147,306)))
