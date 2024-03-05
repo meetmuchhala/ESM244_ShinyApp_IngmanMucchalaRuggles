@@ -70,7 +70,7 @@ ggplot() +
 ```{r}
 tmap_mode("view") 
 
-tm_shape(county_df) + 
+tm_shape(county_sf) + 
   tm_polygons()+
 tm_shape(city_comm_sf_short) +
   tm_dots(size = 0.02) +
